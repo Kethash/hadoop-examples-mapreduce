@@ -1,6 +1,6 @@
 package com.opstty.reducer;
 
-import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.junit.Before;
@@ -15,22 +15,21 @@ import java.util.Arrays;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public class IntSumReducerTest {
+public class SpeciesReducerTest {
     @Mock
     private Reducer.Context context;
-    private DistrictReducer districtReducer;
+    private SpeciesReducer speciesReducer;
 
     @Before
     public void setup() {
-        this.districtReducer = new DistrictReducer();
+        this.speciesReducer = new SpeciesReducer();
     }
 
     @Test
     public void testReduce() throws IOException, InterruptedException {
         String key = "key";
-        IntWritable value = new IntWritable(1);
-        Iterable<IntWritable> values = Arrays.asList(value, value, null);
-        this.districtReducer.reduce(new Text(key), values, this.context);
-        verify(this.context).write(new Text(key), new IntWritable(2));
+        Iterable<NullWritable> values = Arrays.asList(null, null, null);
+        this.speciesReducer.reduce(new Text(key), values, this.context);
+        verify(this.context).write(new Text(key), NullWritable.get());
     }
 }

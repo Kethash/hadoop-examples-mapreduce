@@ -1,6 +1,7 @@
 package com.opstty.reducer;
 
-import org.apache.hadoop.io.IntWritable;
+import com.opstty.writable.DistrictAgeWritable;
+import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.junit.Before;
@@ -15,22 +16,21 @@ import java.util.Arrays;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public class IntSumReducerTest {
+public class OldestTreeReducerTest {
     @Mock
     private Reducer.Context context;
-    private DistrictReducer districtReducer;
+    private OldestTreeReducer oldestTreeReducer;
 
     @Before
     public void setup() {
-        this.districtReducer = new DistrictReducer();
+        this.oldestTreeReducer = new OldestTreeReducer();
     }
 
     @Test
     public void testReduce() throws IOException, InterruptedException {
         String key = "key";
-        IntWritable value = new IntWritable(1);
-        Iterable<IntWritable> values = Arrays.asList(value, value, null);
-        this.districtReducer.reduce(new Text(key), values, this.context);
-        verify(this.context).write(new Text(key), new IntWritable(2));
+        Iterable<DistrictAgeWritable> values = Arrays.asList(new DistrictAgeWritable(1, 2001), new DistrictAgeWritable(2,2002), new DistrictAgeWritable(3,2003));
+        this.oldestTreeReducer.reduce(NullWritable.get(), values, this.context);
+        verify(this.context).write(NullWritable.get(), new DistrictAgeWritable(1, 2001));
     }
 }
