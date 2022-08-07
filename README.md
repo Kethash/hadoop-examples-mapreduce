@@ -1,6 +1,6 @@
 # hadoop-examples-mapreduce
 
-Lab from TAN Kétessar
+Lab from Kethash
 
 All done with testings
 
